@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AccountService {
     Account createAccount(Account account);
+    
+    String checkBalance(Long accountId);
 
     String creditAmount(Long accountId, Transaction transaction);
 

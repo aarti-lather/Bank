@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -67,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
         int currentBalance = account.getCurrentBalance();
         int updatedBalance = currentBalance - transaction.getAmount();
 
-        if (updatedBalance < 0)
+        if (updatedBalance < 0 || account.getCurrentBalance()<transaction.getAmount())
             throw new InvalidTransactionException("Cannot draw more than bank balance");
 
         account.setCurrentBalance(updatedBalance);
@@ -89,4 +90,16 @@ public class AccountServiceImpl implements AccountService {
 
         return account.getTransactions();
     }
+
+	@Override
+	public String checkBalance(Long accountId) {
+		Optional<Account> optional = accountRepository.findById(accountId);
+		if(optional.isPresent()) {
+			return optional.get().getCurrentBalance() +" : is your current Balance";
+		}
+		else {
+			throw new ResourceNotFoundException("Account id not found");
+		}
+		
+	}
 }

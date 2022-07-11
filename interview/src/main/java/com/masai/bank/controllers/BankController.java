@@ -96,4 +96,11 @@ public class BankController {
         List<Transaction> history = accountService.getTransactionHistory(accountId);
         return new ResponseEntity<>(history, HttpStatus.OK);
     }
+    
+    @GetMapping("/getBalance/{accountId}")
+    public ResponseEntity<String> checkBalance(@PathVariable Long accountId){
+    String balance = accountService.checkBalance(accountId);
+    return new ResponseEntity<>(balance, HttpStatus.OK);    
+    }
+    
 }
